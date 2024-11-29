@@ -10,9 +10,16 @@ const app = express();
 const PORT = 5000;
 
 
-app.use(cors({
-    origin: 'http://localhost:8081'
-}));
+// app.use(cors({
+//     origin: 'http://localhost:8081'
+// }));
+
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*'); // Allows all origins
+    res.header('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE, OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    next();
+});
 
 
 // Middleware to parse JSON
@@ -22,8 +29,8 @@ app.use(express.json());
 
 const mongoURI = "mongodb+srv://fatimatariq8:AIebicgo8wqu3sf8@cluster0.gmcfa.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 mongoose.connect(mongoURI)
-.then(()=> console.log('mongo connected'))
-.catch(err=> console.log(err))
+    .then(() => console.log('mongo connected'))
+    .catch(err => console.log(err))
 
 // Routes
 app.use('/api/users', userRoutes);
@@ -38,5 +45,6 @@ app.get('/', (req, res) => {
 });
 
 app.listen(PORT, () => {
+    // 192.168.1.4
     console.log(`Server is running on http://localhost:${PORT}`);
 });
